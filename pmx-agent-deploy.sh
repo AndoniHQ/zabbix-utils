@@ -29,6 +29,7 @@ apt install -y zabbix-agent
 echo -e "\n[*]Configurando Zabbix Agent...\n"
 sed -i "s/\(Server *= *\).*/\1$IP/" $AGENT_CONFIG && echo -e "\tServer=$IP"
 sed -i "s/\(ServerActive *= *\).*/\1$IP/" $AGENT_CONFIG && echo -e "\tServerActive=$IP"
+sed -i '/Hostname=/s/^# //' $AGENT_CONFIG
 sed -i "s/\(Hostname *= *\).*/\1$CLIENT-Proxmox/" $AGENT_CONFIG && echo -e "\tHostname=$CLIENT-Proxmox"
 sed -i '/HostMetadata=/s/^# //' $AGENT_CONFIG
 sed -i "s/\(HostMetadata *= *\).*/\1$CLIENT,Linux,Proxmox/" $AGENT_CONFIG && echo -e "\tHostMetadata=$CLIENT,Linux,Proxmox"
