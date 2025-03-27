@@ -14,16 +14,24 @@ if [[ $# -eq 0 ]] ; then
     exit 0
 fi
 
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    echo "$VERSION_ID"
+else
+    echo "No se pudo determinar la versión de Ubuntu."
+    exit 1
+fi
+
 #Variables
 CLIENT=$1
-ZABBIX_URL="https://repo.zabbix.com/zabbix/6.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.0-4%2Bubuntu22.04_all.deb"
+ZABBIX_URL="https://repo.zabbix.com/zabbix/6.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.0-4%2Bubuntu${VERSION_ID}_all.deb"
 PROXY_CONFIG="/etc/zabbix/zabbix_proxy.conf"
 AGENT_CONFIG="/etc/zabbix/zabbix_agentd.conf"
 
 #Acciones
 echo -e "\n[*]Agregando repositorios de Zabbix...\n"
 wget "${ZABBIX_URL}" -P /tmp/
-dpkg -i /tmp/zabbix-release_6.0-4+ubuntu22.04_all.deb
+dpkg -i /tmp/zabbix-release_6.0-4+ubuntu${VERSION_ID}_all.deb
 apt update
 
 echo -e "\n[*]Instalando requisitos...\n"
